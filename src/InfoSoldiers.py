@@ -17,9 +17,6 @@ dp = Dispatcher(bot, storage=storage)
 subscribers = Subscribers(configuration.subscribers_file_path)
 
 async def startup(dispatcher: Dispatcher):
-    # await bot.send_message(configuration.chat_id=369737554, text='Hello', reply_markup=get_main_menu())
-    # await state.finish()  # Clear any existing state
-    # await UserStatus.MAIN_MENU.set()  # Set the user state to main menu
     None
 
 async def shutdown(dispatcher: Dispatcher):
@@ -41,7 +38,7 @@ def start_bot():
     log_folder_path = os.path.abspath(configuration.log_folder_path)
     log_file_path = os.path.join(log_folder_path, "bot.log")
     logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-    # logging.basicConfig(level=logging.INFO, filename=log_file_path, format="%(asctime)s - %(levelname)s - %(message)s", filemode="w")
+    logging.basicConfig(level=logging.INFO, filename=log_file_path, format="%(asctime)s - %(levelname)s - %(message)s", filemode="w")
     logging.info(f"Bot started. Log file {log_file_path}")
 
     scheduler_message = SchedulerMessage(bot, subscribers)

@@ -1,0 +1,2 @@
+# InfoSoldiersBot
+InfoSoldiersBot

@@ -10,5 +10,6 @@ class Config():
         self.chat_id = config['Credentials']['chat_id']
         self.log_folder_path = config['Paths']['log_folder_path']
         self.subscribers_file_path = config['Paths']['subscribers_file_path']
+        self.data_folder_path = config['Paths']['data_folder_path']
 
 configuration = Config()

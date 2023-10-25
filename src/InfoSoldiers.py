@@ -16,6 +16,8 @@ bot = Bot(token=configuration.bot_api_token)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 subscribers = Subscribers(configuration.subscribers_file_path)
+messages_builder = MessagesBuilder(configuration.data_folder_path)
+
 
 async def startup(dispatcher: Dispatcher):
     None
@@ -32,6 +34,8 @@ def message_log(message, custom=""):
 async def process_message(message: types.Message, state: FSMContext):
     subscribers.add_chat_id(message.chat.id)
     message_log(message, custom="[process_message] ")
+    if message.text == "/test":
+        await message.reply(messages_builder.get_tehilim_message())
     await message.reply(f"echo '{message}'")
 
 
@@ -42,13 +46,11 @@ def start_bot():
     logging.basicConfig(level=logging.INFO, filename=log_file_path, format="%(asctime)s - %(levelname)s - %(message)s", filemode="w")
     logging.info(f"Bot started. Log file {log_file_path}")
 
-    messages_builder = MessagesBuilder()
-    message = messages_builder.get_tehilim_message()
 
     scheduler_message = SchedulerMessage(bot, subscribers)
 
-    scheduler_message.add_event(hour=11, minutes=0, message=message)
-    scheduler_message.add_event(hour=15, minutes=0, message=message)
-    scheduler_message.add_event(hour=20, minutes=0, message=message)
+    scheduler_message.add_event(hour=11, minutes=0, message_func=lambda:messages_builder.get_tehilim_message)
+    scheduler_message.add_event(hour=15, minutes=0, message_func=lambda:messages_builder.get_tehilim_message)
+    scheduler_message.add_event(hour=20, minutes=0, message_func=lambda:messages_builder.get_tehilim_message)
 
     executor.start_polling(dp, on_startup=startup, on_shutdown=shutdown)

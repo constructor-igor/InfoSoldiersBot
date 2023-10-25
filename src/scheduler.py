@@ -12,10 +12,10 @@ class SchedulerMessage():
         self.subscribers = subscribers
         self.loop = asyncio.get_event_loop()
 
-    def add_event(self, hour, minutes, message):
-        self.loop.create_task(self.send_scheduled_message(hour, minutes, message))
+    def add_event(self, hour, minutes, message_func):
+        self.loop.create_task(self.send_scheduled_message(hour, minutes, message_func))
 
-    async def send_scheduled_message(self, hour, minutes, message):
+    async def send_scheduled_message(self, hour, minutes, message_func):
         while True:
             now = datetime.now()
             target_time = now.replace(hour=hour, minute=minutes, second=0, microsecond=0)
@@ -24,5 +24,5 @@ class SchedulerMessage():
                 target_time += timedelta(days=1)
             await asyncio.sleep((target_time - datetime.now()).total_seconds())
             for chat_id in self.subscribers.get_all():
-                await self.bot.send_message(chat_id=chat_id, text=message)
+                await self.bot.send_message(chat_id=chat_id, text=message_func())
             logging.info("Scheduled message sent.")

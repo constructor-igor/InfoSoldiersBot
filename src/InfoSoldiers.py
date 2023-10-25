@@ -10,6 +10,7 @@ from aiogram.dispatcher import FSMContext
 from .config import configuration
 from .subscribers import Subscribers
 from .scheduler import SchedulerMessage
+from .messages_builder import MessagesBuilder
 
 bot = Bot(token=configuration.bot_api_token)
 storage = MemoryStorage()
@@ -41,9 +42,13 @@ def start_bot():
     logging.basicConfig(level=logging.INFO, filename=log_file_path, format="%(asctime)s - %(levelname)s - %(message)s", filemode="w")
     logging.info(f"Bot started. Log file {log_file_path}")
 
+    messages_builder = MessagesBuilder()
+    message = messages_builder.get_tehilim_message()
+
     scheduler_message = SchedulerMessage(bot, subscribers)
-    scheduler_message.add_event(hour=11, minutes=0)
-    scheduler_message.add_event(hour=15, minutes=0)
-    scheduler_message.add_event(hour=20, minutes=0)
+
+    scheduler_message.add_event(hour=11, minutes=0, message=message)
+    scheduler_message.add_event(hour=15, minutes=0, message=message)
+    scheduler_message.add_event(hour=20, minutes=0, message=message)
 
     executor.start_polling(dp, on_startup=startup, on_shutdown=shutdown)

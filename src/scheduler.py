@@ -12,16 +12,10 @@ class SchedulerMessage():
         self.subscribers = subscribers
         self.loop = asyncio.get_event_loop()
 
-    def add_event(self, hour, minutes):
-        self.loop.create_task(self.send_scheduled_message(hour, minutes))
+    def add_event(self, hour, minutes, message):
+        self.loop.create_task(self.send_scheduled_message(hour, minutes, message))
 
-    async def send_scheduled_message(self, hour, minutes):
-        message = 'שלום לכולם! למי שמעוניין בדרך חוץ מכסף לתמוך בחיילים החטופים ובעם ישראל, מומלץ לקרוא פרקי תהילים במלחמה לשם ביטחון. \
-    תהילים פרק קכ"א  \
-    [https://tehilim.co/chapter/121/] \
-    תהילים פרק ק"ל \
-    [https://tehilim.co/chapter/130/] \
-    המשך יום טוב .👋'
+    async def send_scheduled_message(self, hour, minutes, message):
         while True:
             now = datetime.now()
             target_time = now.replace(hour=hour, minute=minutes, second=0, microsecond=0)

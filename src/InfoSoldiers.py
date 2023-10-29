@@ -8,9 +8,12 @@ from aiogram.utils import executor
 from aiogram.dispatcher import FSMContext
 
 from .config import configuration
+from .log_factory import creating_log
 from .subscribers import Subscribers
 from .scheduler import SchedulerMessage
 from .messages_builder import MessagesBuilder
+
+creating_log()
 
 bot = Bot(token=configuration.bot_api_token)
 storage = MemoryStorage()
@@ -41,12 +44,7 @@ async def process_message(message: types.Message, state: FSMContext):
 
 
 def start_bot():
-    log_folder_path = os.path.abspath(configuration.log_folder_path)
-    log_file_path = os.path.join(log_folder_path, "bot.log")
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-    logging.basicConfig(level=logging.INFO, filename=log_file_path, format="%(asctime)s - %(levelname)s - %(message)s", filemode="w")
-    logging.info(f"Bot started. Log file {log_file_path}")
-
+    # creating_log()
 
     scheduler_message = SchedulerMessage(bot, subscribers)
 

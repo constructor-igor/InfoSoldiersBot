@@ -1,0 +1,11 @@
+[
+    {"time": "11:00", "file_name": "tehilim_message.txt"},
+    {"time": "15:00", "file_name": "tehilim_message.txt"},
+    {"time": "20:00", "file_name": "tehilim_message.txt"},
+
+    {"time": "17:00", "file_name": "oref_message.txt"},
+
+    {"time": "10:00", "file_name": "truma_message.txt"},
+    {"time": "14:00", "file_name": "truma_message.txt"},
+    {"time": "19:00", "file_name": "truma_message.txt"}
+]

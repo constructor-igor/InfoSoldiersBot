@@ -48,14 +48,8 @@ async def process_message(message: types.Message, state: FSMContext):
 def start_bot():
     scheduler_message = SchedulerMessage(bot, subscribers)
 
-    scheduler_message.add_event(hour=11, minutes=0, message_func=lambda:messages_builder.get_tehilim_message())
-    scheduler_message.add_event(hour=15, minutes=0, message_func=lambda:messages_builder.get_tehilim_message())
-    scheduler_message.add_event(hour=20, minutes=0, message_func=lambda:messages_builder.get_tehilim_message())
-
-    scheduler_message.add_event(hour=17, minutes=0, message_func=lambda:messages_builder.get_oref_message())
-
-    scheduler_message.add_event(hour=10, minutes=0, message_func=lambda:messages_builder.get_truma_message())
-    scheduler_message.add_event(hour=14, minutes=0, message_func=lambda:messages_builder.get_truma_message())
-    scheduler_message.add_event(hour=19, minutes=0, message_func=lambda:messages_builder.get_truma_message())
+    all_items = messages_builder.import_scheduler()
+    for hour, minutes, message_file_name in all_items:
+        scheduler_message.add_event(hour=hour, minutes=minutes, message_func=lambda:messages_builder.get_message(message_file_name))
 
     executor.start_polling(dp, on_startup=startup, on_shutdown=shutdown)

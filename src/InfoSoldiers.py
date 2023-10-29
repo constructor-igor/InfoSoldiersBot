@@ -39,13 +39,13 @@ async def process_message(message: types.Message, state: FSMContext):
     message_log(message, custom="[process_message] ")
     if message.text == "/test":
         await message.reply(messages_builder.get_tehilim_message())
+        await message.reply(messages_builder.get_oref_message())
+        await message.reply(messages_builder.get_truma_message())
     else:
         await message.reply(f"echo '{message}'")
 
 
 def start_bot():
-    # creating_log()
-
     scheduler_message = SchedulerMessage(bot, subscribers)
 
     scheduler_message.add_event(hour=11, minutes=0, message_func=lambda:messages_builder.get_tehilim_message())
@@ -53,5 +53,9 @@ def start_bot():
     scheduler_message.add_event(hour=20, minutes=0, message_func=lambda:messages_builder.get_tehilim_message())
 
     scheduler_message.add_event(hour=17, minutes=0, message_func=lambda:messages_builder.get_oref_message())
+
+    scheduler_message.add_event(hour=10, minutes=0, message_func=lambda:messages_builder.get_truma_message())
+    scheduler_message.add_event(hour=14, minutes=0, message_func=lambda:messages_builder.get_truma_message())
+    scheduler_message.add_event(hour=19, minutes=0, message_func=lambda:messages_builder.get_truma_message())
 
     executor.start_polling(dp, on_startup=startup, on_shutdown=shutdown)

@@ -16,3 +16,7 @@ class MessagesBuilder():
     def get_oref_message(self):
         oref_message = self._read_text_from_file(os.path.join(self.data_folder_path, "oref_message.txt"))
         return oref_message
+
+    def get_truma_message(self):
+        truma_message = self._read_text_from_file(os.path.join(self.data_folder_path, "truma_message.txt"))
+        return truma_message

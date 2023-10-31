@@ -50,6 +50,7 @@ def start_bot():
 
     all_items = messages_builder.import_scheduler()
     for hour, minutes, message_file_name in all_items:
-        scheduler_message.add_event(hour=hour, minutes=minutes, message_func=lambda:messages_builder.get_message(message_file_name))
+        message_func = lambda:messages_builder.get_message(message_file_name)
+        scheduler_message.add_event(hour=hour, minutes=minutes, message_func=message_func)
 
     executor.start_polling(dp, on_startup=startup, on_shutdown=shutdown)

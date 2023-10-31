@@ -44,7 +44,7 @@ class MessagesBuilder():
                 parsed_time = datetime.strptime(time_string, "%H:%M")
                 hours = parsed_time.hour
                 minutes = parsed_time.minute
-                logging.info(f"Time: {hours}:{minutes}, File Name: {file_name}")
+                logging.info(f"Time: {hours:02d}:{minutes:02d}, File Name: {file_name}")
                 all_items.append((hours, minutes, file_name))
             return all_items
         except FileNotFoundError:

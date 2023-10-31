@@ -12,6 +12,7 @@ from .log_factory import creating_log
 from .subscribers import Subscribers
 from .scheduler import SchedulerMessage
 from .messages_builder import MessagesBuilder
+from .red_alert import red_alert_checking
 
 creating_log()
 
@@ -53,5 +54,6 @@ def start_bot():
     for hour, minutes, message_file_name in all_items:
         message_func = lambda:messages_builder.get_message(message_file_name)
         scheduler_message.add_event(hour=hour, minutes=minutes, message_func=message_func)
+    scheduler_message.add_polling(custom_polling_func=red_alert_checking, sleep_seconds=1)
 
     executor.start_polling(dp, on_startup=startup, on_shutdown=shutdown)

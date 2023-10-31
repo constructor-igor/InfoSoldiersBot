@@ -9,6 +9,7 @@ import requests
 import json
 import time
 
+
 class RedAlert():
 
     def __init__(self):
@@ -104,6 +105,14 @@ class RedAlert():
         j["timestamp"] = time.time()
         # parse data
         return j
+
+alert = RedAlert()
+def red_alert_checking():
+    red_alerts = alert.get_red_alerts()
+    is_red_alert = red_alerts != None
+    if is_red_alert:
+        None
+    return is_red_alert
 
 def main():
 

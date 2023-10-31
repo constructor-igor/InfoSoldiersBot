@@ -7,5 +7,7 @@
 
     {"time": "10:00", "file_name": "truma_message.txt"},
     {"time": "14:00", "file_name": "truma_message.txt"},
-    {"time": "19:00", "file_name": "truma_message.txt"}
+    {"time": "19:00", "file_name": "truma_message.txt"},
+
+    {"time": "09:00", "file_name": "tfila_message.txt"}
 ]

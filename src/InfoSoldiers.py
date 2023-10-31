@@ -41,6 +41,7 @@ async def process_message(message: types.Message, state: FSMContext):
         await message.reply(messages_builder.get_tehilim_message())
         await message.reply(messages_builder.get_oref_message())
         await message.reply(messages_builder.get_truma_message())
+        await message.reply(messages_builder.get_message("tfila_message.txt"))
     else:
         await message.reply(f"echo '{message}'")
 

@@ -2,6 +2,7 @@ import os
 import json
 from datetime import datetime
 import logging
+from .HebrewCalendar import HebrewCalendar
 
 
 class MessagesBuilder():
@@ -28,7 +29,9 @@ class MessagesBuilder():
         specific_date = datetime(year=2023, month=10, day=7)
         current_date = datetime.now()
         number_of_days = (current_date - specific_date).days + 1
-        return f"{self._ordinal(number_of_days)} day of war"
+        hebrew_calendar = HebrewCalendar()
+        hebrew_date = hebrew_calendar.get_hebrew_date_str()
+        return f"{self._ordinal(number_of_days)} day of war ({hebrew_date})"
 
     def get_tehilim_message(self):
         tehilim_message = self._read_text_from_file(os.path.join(self.data_folder_path, "tehilim_message.txt"))

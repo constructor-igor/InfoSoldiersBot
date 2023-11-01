@@ -52,7 +52,8 @@ def start_bot():
 
     all_items = messages_builder.import_scheduler()
     for hour, minutes, message_file_name in all_items:
-        message_func = lambda:messages_builder.get_message(message_file_name)
+        cloned_message_file_name = message_file_name
+        message_func = lambda:messages_builder.get_message(cloned_message_file_name)
         scheduler_message.add_event(hour=hour, minutes=minutes, message_func=message_func)
     scheduler_message.add_polling(custom_polling_func=red_alert_checking, sleep_seconds=1)
 

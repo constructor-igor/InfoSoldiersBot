@@ -17,6 +17,19 @@ class MessagesBuilder():
         message = self._read_text_from_file(os.path.join(self.data_folder_path, file_path))
         return message
 
+    def _ordinal(self, number):
+        if 10 <= number % 100 <= 20:
+            suffix = 'th'
+        else:
+            suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(number % 10, 'th')
+        return f"{number}{suffix}"
+
+    def get_daily_message(self):
+        specific_date = datetime(year=2023, month=10, day=7)
+        current_date = datetime.now()
+        number_of_days = (current_date - specific_date).days + 1
+        return f"{self._ordinal(number_of_days)} day of war"
+
     def get_tehilim_message(self):
         tehilim_message = self._read_text_from_file(os.path.join(self.data_folder_path, "tehilim_message.txt"))
         return tehilim_message

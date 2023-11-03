@@ -4,8 +4,10 @@ import logging
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.utils import executor
 from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.filters.state import State, StatesGroup
 
 from .config import configuration
 from .log_factory import creating_log
@@ -15,6 +17,10 @@ from .messages_builder import MessagesBuilder
 from .red_alert import red_alert_checking
 
 creating_log()
+
+# Define user states
+class UserStatus(StatesGroup):
+    MAIN_MENU = State()  # Main menu state
 
 bot = Bot(token=configuration.bot_api_token)
 storage = MemoryStorage()
@@ -34,11 +40,31 @@ def message_log(message, custom=""):
     user = message['from']
     logging.info(f"{custom}Message from {user.id} ({user.first_name}, {user.username}): {message.text}")
 
-@dp.message_handler()
+def get_main_menu():
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add(KeyboardButton("/test"))
+    # keyboard.add(KeyboardButton("/calendar"))
+    # keyboard.add(KeyboardButton("/weather"))
+    # keyboard.add(KeyboardButton("/forecast"))
+    # keyboard.add(KeyboardButton("/beaches"))
+    # keyboard.add(KeyboardButton("/gematria"))
+    return keyboard
+
+
+@dp.message_handler(commands=["start"])
+async def start_command(message: types.Message, state: FSMContext):
+    message_log(message, "[start_command] ")
+    await state.finish()  # Clear any existing state
+    await UserStatus.MAIN_MENU.set()  # Set the user state to main menu
+    await message.reply("Hi, Select command from menu", reply_markup=get_main_menu())
+
+@dp.message_handler(state=UserStatus.MAIN_MENU)
 async def process_message(message: types.Message, state: FSMContext):
     subscribers.add_chat_id(message.chat.id)
     message_log(message, custom="[process_message] ")
-    if message.text == "/test":
+    if message.text == "/start":
+        await start_command(message, state)
+    elif message.text == "/test":
         await message.reply(messages_builder.get_tehilim_message())
         await message.reply(messages_builder.get_oref_message())
         await message.reply(messages_builder.get_truma_message())

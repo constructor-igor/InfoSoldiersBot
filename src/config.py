@@ -1,4 +1,6 @@
+import os
 import json
+
 
 class Config():
     def __init__(self):
@@ -11,5 +13,7 @@ class Config():
         self.log_folder_path = config['Paths']['log_folder_path']
         self.subscribers_file_path = config['Paths']['subscribers_file_path']
         self.data_folder_path = config['Paths']['data_folder_path']
+        self.kidnapped_person_file_path = os.path.join(self.data_folder_path, "Bring them home November 6 English.pdf")
+
 
 configuration = Config()

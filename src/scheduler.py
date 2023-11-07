@@ -19,6 +19,9 @@ class SchedulerMessage():
         # self._run_polling(custom_polling_func, sleep_seconds)
         self.loop.create_task(self._run_polling(custom_polling_func, sleep_seconds))
 
+    def add_custom_event(self, hour, minutes, custom_event):
+        self.loop.create_task(self.send_scheduled_custom(hour, minutes, custom_event))
+
     async def send_scheduled_message(self, hour, minutes, message_func):
         while True:
             now = datetime.now()
@@ -30,6 +33,18 @@ class SchedulerMessage():
             for chat_id in self.subscribers.get_all():
                 await self.bot.send_message(chat_id=chat_id, text=message_func())
             logging.info("Scheduled message sent.")
+
+    async def send_scheduled_custom(self, hour, minutes, custom_event):
+        while True:
+            now = datetime.now()
+            target_time = now.replace(hour=hour, minute=minutes, second=0, microsecond=0)
+            time_until_target = target_time - now
+            if time_until_target.total_seconds() < 0:
+                target_time += timedelta(days=1)
+            await asyncio.sleep((target_time - datetime.now()).total_seconds())
+            for chat_id in self.subscribers.get_all():
+                await custom_event(chat_id)
+            logging.info("Scheduled custom event.")
 
     async def _run_polling(self, custom_polling_func, sleep_seconds):
         while True:

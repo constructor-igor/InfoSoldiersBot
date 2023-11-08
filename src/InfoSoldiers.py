@@ -57,7 +57,7 @@ def get_main_menu():
 async def send_random_photo(chat_id):
     random_file = kidnapped_person.get_random()
     with open(random_file, "rb") as photo_file:
-        await bot.send_photo(chat_id, photo_file, caption="Kidnapped Person")
+        await bot.send_photo(chat_id, photo_file, caption="#brinbthemhome #KidnappedFromIsrael")
 
 @dp.message_handler(commands=["start"])
 async def start_command(message: types.Message, state: FSMContext):

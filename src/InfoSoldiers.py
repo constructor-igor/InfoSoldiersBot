@@ -66,7 +66,8 @@ async def start_command(message: types.Message, state: FSMContext):
     await UserStatus.MAIN_MENU.set()  # Set the user state to main menu
     await message.reply("Hi, Select command from menu", reply_markup=get_main_menu())
 
-@dp.message_handler(state=UserStatus.MAIN_MENU)
+# @dp.message_handler(state=UserStatus.MAIN_MENU)
+@dp.message_handler()
 async def process_message(message: types.Message, state: FSMContext):
     subscribers.add_chat_id(message.chat.id)
     message_log(message, custom="[process_message] ")

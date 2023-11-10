@@ -25,6 +25,9 @@ class SchedulerMessage():
     async def send_scheduled_message(self, hour, minutes, message_func):
         while True:
             now = datetime.now()
+            if now.weekday() == 4 and now.hour>=15:
+                await asyncio.sleep(108000)  # Sleep for 30 hours (15:00 0 21:00) and check again
+                continue
             target_time = now.replace(hour=hour, minute=minutes, second=0, microsecond=0)
             time_until_target = target_time - now
             if time_until_target.total_seconds() < 0:
@@ -37,6 +40,9 @@ class SchedulerMessage():
     async def send_scheduled_custom(self, hour, minutes, custom_event):
         while True:
             now = datetime.now()
+            if now.weekday() == 4 and now.hour>=15:
+                await asyncio.sleep(108000)  # Sleep for 30 hours (15:00 0 21:00) and check again
+                continue
             target_time = now.replace(hour=hour, minute=minutes, second=0, microsecond=0)
             time_until_target = target_time - now
             if time_until_target.total_seconds() < 0:
